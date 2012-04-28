@@ -1,0 +1,79 @@
+   SpecSwap-RMC version 1.0a0
+   Copyright (c) 2008 - 2012  Mikael Leetmaa
+
+
+       ===============================================================
+         SSS                 SSS                     RRRR  M   M  CCC
+        S                   S                        R   R MM MM C
+         SSS  ppp  eee  ccc  SSS  w   w  aa ppp  --- RRRR  M M M C
+            S p  p e e c        S w w w a a p  p     R R   M   M C
+        SSSS  ppp  ee   ccc SSSS   w w  aaa ppp      R  RR M   M  CCC
+      ======= p =========================== p =========================
+              p                             p
+
+
+
+   Author:  Mikael Leetmaa   <leetmaa@fysik.su.se>
+
+
+   This program implements the SpecSwap-RMC method as described in:
+
+        "SpecSwap-RMC: a novel reverse Monte Carlo approach using a discrete
+         set of local configurations and pre-computed properties"
+         Mikael Leetmaa, Kjartan Thor Wikfeldt and Lars G. M. Pettersson
+         J. Phys.: Cond. Matter, 22, 135001, (2010)
+
+
+    This program is distributed under the terms of the GNU General Public
+    License version 3 as published by the Free Software Foundation,
+    with the Additional Terms as stated in the SpecSwap-RMC LICENSE file.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    SpecSwap-RMC LICENSE file for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 21:26:53 2012
+
+Reading input from file: test1.inp
+Reading version-3.0 binary library file: ../libraries/testlib.library
+Successfully read information from file: ../libraries/testlib.library
+Making post-reading input processng...
+Everything is now setup and ready for running.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 21:26:55 2012
+
+Starting MLRMC run: CurveTest1
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+    577741      1000     0.00173088       0.001731
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  1.2532190e+03
+ From scalar distributions:
+                             VP-Volume  2.1468604e-04
+  From mean scalars:
+                                                         Value        Target
+                             VP-Volume  3.7305715e-02   3.0472e+01   2.8000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  1.2818904e-03   7.0000e-02   5.0000e-01
+
+       Total Chi2:          1.2532578e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+SPECSWAP simulation run for 5 seconds.
+Total number of accepted moves: 1404
+
+Successfully ended MLRMC run: CurveTest1
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 21:27:00 2012
+
+Exiting SpecSwap-RMC

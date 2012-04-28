@@ -1,0 +1,23 @@
+
+&RUN
+   TITLE analysis_run_ice4
+   LIBPATH ../libraries/testlib2
+   SEED 991
+   NSAMPLE 80
+   MOVES   0
+   PRINT   1000
+   PROBE   1000
+   DUMP    10000
+   RESTART ./references/ice4.restart
+&END
+
+&CURVE XAS.DKSfwhm
+  EXPPATH ../refdata/computed_xas_ice_ref.data
+  SIGMA 0.001
+  AREARENORM
+&END
+
+
+&ANALYSIS
+   CHUNKS 10 10
+&END

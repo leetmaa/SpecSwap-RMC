@@ -1,0 +1,314 @@
+   SpecSwap-RMC version 1.0a0
+   Copyright (c) 2008 - 2012  Mikael Leetmaa
+
+
+       ===============================================================
+         SSS                 SSS                     RRRR  M   M  CCC
+        S                   S                        R   R MM MM C
+         SSS  ppp  eee  ccc  SSS  w   w  aa ppp  --- RRRR  M M M C
+            S p  p e e c        S w w w a a p  p     R R   M   M C
+        SSSS  ppp  ee   ccc SSSS   w w  aaa ppp      R  RR M   M  CCC
+      ======= p =========================== p =========================
+              p                             p
+
+
+
+   Author:  Mikael Leetmaa   <leetmaa@fysik.su.se>
+
+
+   This program implements the SpecSwap-RMC method as described in:
+
+        "SpecSwap-RMC: a novel reverse Monte Carlo approach using a discrete
+         set of local configurations and pre-computed properties"
+         Mikael Leetmaa, Kjartan Thor Wikfeldt and Lars G. M. Pettersson
+         J. Phys.: Cond. Matter, 22, 135001, (2010)
+
+
+    This program is distributed under the terms of the GNU General Public
+    License version 3 as published by the Free Software Foundation,
+    with the Additional Terms as stated in the SpecSwap-RMC LICENSE file.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    SpecSwap-RMC LICENSE file for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 15:59:38 2012
+
+Reading input from file: test2.inp
+Reading version-3.0 binary library file: ../libraries/testlib.library
+Successfully read information from file: ../libraries/testlib.library
+Making post-reading input processng...
+Reading restart information from file test2.restart
+Done reading restart information.
+Everything is now setup and ready for running.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 15:59:40 2012
+
+Starting MLRMC run: FuncTest2
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+       346       100     0.28901734       0.289017
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  2.6690890e-01
+                       bas  8.6329781e-04
+                       bas  1.6862331e+03
+ From scalar distributions:
+                             VP-Volume  1.4192377e-02
+                             VP-Volume  7.1848909e-02
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  5.6676863e+01   1.7528e+00   1.0000e+00
+                        Tetrahedrality  1.1751055e+01   6.5720e-01   1.0000e+00
+                          SPC/E-Energy  3.0305837e+03   9.9493e+00   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  7.2874650e+02   2.3005e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  1.3238665e-03   1.3615e-01   5.0000e-01
+
+       Total Chi2:          5.5143534e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+      1200       200     0.11709602       0.166667
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  2.2490139e-01
+                       bas  7.2742751e-04
+                       bas  1.4922427e+03
+ From scalar distributions:
+                             VP-Volume  1.5251352e-02
+                             VP-Volume  7.7209972e-02
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.9549702e+01   1.7039e+00   1.0000e+00
+                        Tetrahedrality  1.6775370e+01   5.9042e-01   1.0000e+00
+                          SPC/E-Energy  2.1627980e+03   1.8494e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  6.3088232e+02   2.4883e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  1.2899226e-03   1.4085e-01   5.0000e-01
+
+       Total Chi2:          4.3525745e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+      2500       300     0.07692308       0.120000
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  5.5464777e-01
+                       bas  1.7939687e-03
+                       bas  1.4005761e+03
+ From scalar distributions:
+                             VP-Volume  1.9314943e-02
+                             VP-Volume  9.7781901e-02
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.6099637e+01   1.6790e+00   1.0000e+00
+                        Tetrahedrality  1.9962437e+01   5.5321e-01   1.0000e+00
+                          SPC/E-Energy  1.6123697e+03   2.4846e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  4.7659195e+02   2.8169e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  1.3582512e-03   1.3146e-01   5.0000e-01
+
+       Total Chi2:          3.5562818e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+      5650       400     0.03174603       0.070796
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  7.2566839e-01
+                       bas  2.3471227e-03
+                       bas  1.3759753e+03
+ From scalar distributions:
+                             VP-Volume  2.2522811e-02
+                             VP-Volume  1.1402173e-01
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.6208719e+01   1.6798e+00   1.0000e+00
+                        Tetrahedrality  1.9124402e+01   5.6269e-01   1.0000e+00
+                          SPC/E-Energy  1.2020818e+03   3.0329e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  3.6153541e+02   3.0986e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  9.1698076e-04   1.9718e-01   5.0000e-01
+
+       Total Chi2:          3.0057982e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+     11502       500     0.01708817       0.043471
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  8.4528582e-01
+                       bas  2.7340167e-03
+                       bas  1.3519254e+03
+ From scalar distributions:
+                             VP-Volume  2.8236328e-02
+                             VP-Volume  1.4294641e-01
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.5799215e+01   1.6768e+00   1.0000e+00
+                        Tetrahedrality  1.8950694e+01   5.6468e-01   1.0000e+00
+                          SPC/E-Energy  9.4751736e+02   3.4218e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  2.6234874e+02   3.3803e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  8.3366396e-04   2.1127e-01   5.0000e-01
+
+       Total Chi2:          2.6275685e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+     27887       600     0.00610314       0.021515
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  1.2182545e+00
+                       bas  3.9403572e-03
+                       bas  1.3049240e+03
+ From scalar distributions:
+                             VP-Volume  2.6017557e-02
+                             VP-Volume  1.3171388e-01
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.5430131e+01   1.6740e+00   1.0000e+00
+                        Tetrahedrality  1.9680679e+01   5.5637e-01   1.0000e+00
+                          SPC/E-Energy  7.1702030e+02   3.8223e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  2.4736053e+02   3.4272e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  9.4563468e-04   1.9249e-01   5.0000e-01
+
+       Total Chi2:          2.3358036e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+     83575       700     0.00179572       0.008376
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  1.4482085e+00
+                       bas  4.6841273e-03
+                       bas  1.2909359e+03
+ From scalar distributions:
+                             VP-Volume  2.9376394e-02
+                             VP-Volume  1.4871799e-01
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.5948030e+01   1.6778e+00   1.0000e+00
+                        Tetrahedrality  2.0433795e+01   5.4796e-01   1.0000e+00
+                          SPC/E-Energy  6.1542964e+02   4.0192e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  1.6668871e+02   3.7089e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  1.0042650e-03   1.8310e-01   5.0000e-01
+
+       Total Chi2:          2.1410752e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+    252268       800     0.00059279       0.003171
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  1.4350057e+00
+                       bas  4.6414235e-03
+                       bas  1.2917439e+03
+ From scalar distributions:
+                             VP-Volume  2.6383612e-02
+                             VP-Volume  1.3356704e-01
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.5961397e+01   1.6779e+00   1.0000e+00
+                        Tetrahedrality  2.0732844e+01   5.4467e-01   1.0000e+00
+                          SPC/E-Energy  4.8419213e+02   4.2996e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  1.9181600e+02   3.6150e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  7.5431462e-04   2.2535e-01   5.0000e-01
+
+       Total Chi2:          2.0360537e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ Acceptance information ------------------------------------------------------
+ Attempted  Accepted    Ratio(last)   Ratio(total)
+    554480       900     0.00033089       0.001623
+
+ Chi2 Information -------------------------- Chi2 ----------------------------
+       From curves:
+                       bas  1.5095467e+00
+                       bas  4.8825213e-03
+                       bas  1.2839945e+03
+ From scalar distributions:
+                             VP-Volume  2.9629718e-02
+                             VP-Volume  1.5000045e-01
+  From mean scalars:
+                                                         Value        Target
+                           Asphericity  4.6153205e+01   1.6794e+00   1.0000e+00
+                        Tetrahedrality  2.0126386e+01   5.5138e-01   1.0000e+00
+                          SPC/E-Energy  4.7523427e+02   4.3200e+01   6.5000e+01
+  From value scalars:
+                       Interval                          Value        Target
+     VP-Volume [ 3.200e+01, 3.250e+01]  1.7903194e+02   3.6620e-01   5.0000e-01
+       VP-Area [ 3.100e+01, 3.250e+01]  2.0977798e-03   0.0000e+00   6.0000e-01
+       VP-Area [ 3.200e+01, 3.250e+01]  2.5000000e-03   0.0000e+00   5.0000e-01
+     VP-Volume [ 0.000e+00, 1.000e+03]  2.5000000e-03   1.0000e+00   5.0000e-01
+Tetrahedrality [ 5.000e-01, 6.000e-01]  8.0677335e-04   2.1596e-01   5.0000e-01
+
+       Total Chi2:          2.0062423e+03
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+SPECSWAP simulation run for 10 seconds.
+Total number of accepted moves: 976
+
+Successfully ended MLRMC run: FuncTest2
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 15:59:50 2012
+
+Exiting SpecSwap-RMC

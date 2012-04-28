@@ -1,0 +1,30 @@
+NCURVES 3
+CONVOLUTE 0.0 0.0 0.0 0.0
+FORMAT 2.3 7.65 108
+dummy_exafs_ref.data SCALE
+ENDING bas
+CONVOLUTE 1.2 1.3 1.4 1.5
+FORMAT 12.0 42.0 189
+SCALE dummy_exafs_ref.data
+ENDING XAS
+CONVOLUTE -11.0 0.01 6 12
+FORMAT -1.36 1.66 101
+SCALE dummy_exafs_ref.data
+ENDING ABC
+NSCALARS 5
+NAMES VP-Area VP-Volume Asphericity Tetrahedrality SPC/E-Energy
+NATOMTYPES 2 O H
+START 12
+basename0
+basename1
+basename2
+basename3
+basename4
+basename5
+basename6
+basename7
+basename8
+basename9
+basename10
+basename11
+END

@@ -1,0 +1,37 @@
+&RUN
+
+  TITLE CurveTest1
+
+  LIBPATH ../libraries/testlib
+
+  SEED 1345875
+
+  NSAMPLE 100
+  MOVES   1000000
+
+  PROBE   1000
+  PRINT   1000
+
+
+&END
+
+&CURVE bas
+  EXPPATH ../refdata/computed_exafs_water_ref.data
+  SIGMA 0.01
+  AREARENORM
+&END
+
+&SCALAR VP-Volume
+  DISTRIBUTION ../refdata/vvol_ref.data
+  SIGMA 12.8
+&END
+
+&SCALAR VP-Volume
+  MEAN 28.0
+  SIGMA 12.8
+&END
+
+&SCALAR VP-Volume
+  VALUE 32.0 32.5 0.5
+  SIGMA 12.01
+&END

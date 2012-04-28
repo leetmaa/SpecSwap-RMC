@@ -1,0 +1,68 @@
+   SpecSwap-RMC version 1.0a0
+   Copyright (c) 2008 - 2012  Mikael Leetmaa
+
+
+       ===============================================================
+         SSS                 SSS                     RRRR  M   M  CCC
+        S                   S                        R   R MM MM C
+         SSS  ppp  eee  ccc  SSS  w   w  aa ppp  --- RRRR  M M M C
+            S p  p e e c        S w w w a a p  p     R R   M   M C
+        SSSS  ppp  ee   ccc SSSS   w w  aaa ppp      R  RR M   M  CCC
+      ======= p =========================== p =========================
+              p                             p
+
+
+
+   Author:  Mikael Leetmaa   <leetmaa@fysik.su.se>
+
+
+   This program implements the SpecSwap-RMC method as described in:
+
+        "SpecSwap-RMC: a novel reverse Monte Carlo approach using a discrete
+         set of local configurations and pre-computed properties"
+         Mikael Leetmaa, Kjartan Thor Wikfeldt and Lars G. M. Pettersson
+         J. Phys.: Cond. Matter, 22, 135001, (2010)
+
+
+    This program is distributed under the terms of the GNU General Public
+    License version 3 as published by the Free Software Foundation,
+    with the Additional Terms as stated in the SpecSwap-RMC LICENSE file.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    SpecSwap-RMC LICENSE file for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 19:17:12 2012
+
+Reading input from file: test6.inp
+Reading version-3.0 binary library file: ../libraries/testlib.library
+Successfully read information from file: ../libraries/testlib.library
+Making post-reading input processng...
+Reading restart information from file restart_file
+Done reading restart information.
+Everything is now setup and ready for running.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 19:17:15 2012
+
+Starting MLRMC run: test6
+SPECSWAP simulation run for 0 seconds.
+Total number of accepted moves: 0
+
+Successfully ended MLRMC run: test6
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 19:17:15 2012
+
+Postprocessing results from RMC run: test6
+Done post processing.
+
+===============================================================================
+Wall-Time Clock: Sat Apr 28 19:17:15 2012
+
+Exiting SpecSwap-RMC

@@ -1,0 +1,83 @@
+&RUN
+
+  TITLE FuncTest2
+
+  LIBPATH ../libraries/testlib
+
+  SEED 991
+
+  NSAMPLE 213
+  MOVES   1000000
+
+  PROBE   100
+  PRINT   100
+
+  RESTART test2.restart
+
+&END
+
+&CURVE bas
+  EXPPATH ../refdata/computed_exafs_water_ref.data
+  SIGMA 1.2
+&END
+
+&CURVE bas
+  EXPPATH ../refdata/computed_exafs_water_ref.data
+  SIGMA 21.1
+&END
+
+&CURVE bas
+  EXPPATH ../refdata/computed_exafs_water_ref.data
+  SIGMA 0.01
+  AREARENORM
+&END
+
+&SCALAR VP-Volume
+  DISTRIBUTION ../refdata/vvol_ref1.data
+  SIGMA 1.8
+&END
+
+&SCALAR VP-Volume
+  DISTRIBUTION ../refdata/vvol_ref2.data
+  SIGMA 0.8
+&END
+
+&SCALAR Asphericity
+  MEAN 1.0
+  SIGMA 0.1
+&END
+
+&SCALAR Tetrahedrality
+  MEAN 1.0
+  SIGMA 0.1
+&END
+
+&SCALAR SPC/E-Energy
+  MEAN 65.0
+  SIGMA 1.0
+&END
+
+&SCALAR VP-Volume
+  VALUE 32.0 32.5 0.5
+  SIGMA 0.01
+&END
+
+&SCALAR VP-Area
+  VALUE 31.0 32.5 0.6
+  SIGMA 13.1
+&END
+
+&SCALAR VP-Area
+  VALUE 32.0 32.5 0.5
+  SIGMA 10.0
+&END
+
+&SCALAR VP-Volume
+  VALUE 0.0 1000.0 0.5
+  SIGMA 10.0
+&END
+
+&SCALAR Tetrahedrality
+  VALUE 0.5 0.6 0.5
+  SIGMA 10.0
+&END

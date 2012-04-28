@@ -1,0 +1,2 @@
+Test for running a SPECSWAP calculation against a reference CURVE and a SCALAR
+distribution, a SCALAR mean value and a SCALAR interval value.

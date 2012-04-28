@@ -1,0 +1,3 @@
+Test for running a SPECSWAP calculation against three reference CURVEs and two
+SCALAR distributions, three SCALAR mean values and a five SCALAR intervals.
+This test runs a restart from the file test2.restart.
