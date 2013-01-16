@@ -23,6 +23,7 @@
 #include <cmath>
 #include <fstream>
 #include <stdexcept>
+#include <algorithm>
 
 #include "specswap.h"
 #include "mathutils.h"
