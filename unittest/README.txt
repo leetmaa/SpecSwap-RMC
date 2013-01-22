@@ -1,5 +1,7 @@
 TO SETUP THE TEST ENVIRONMENT:
 ------------------------------
+If you do not have a cppunit installed on your system already do this:
+
 cd cppunit
 tar -xzvf cppunit-1.12.1.tar.gz
 cd cppunit-1.12.1
@@ -7,10 +9,22 @@ cd cppunit-1.12.1
 make
 make check
 make install
+
 ------------
+
+If you already have cppunit installed and your compiler knows where to
+find it, replace the line:
+LIBS2     = -L./cppunit/lib -l cppunit
+in the Makefile with:
+LIBS2     = -l cppunit
+
+------------
+
 Now make and run the tests by typing
 'make'
 in the unittest directory.
+
+------------
 
 If the linker complains about
 /usr/lib64/libcppunit.so: undefined reference to `dlsym'
