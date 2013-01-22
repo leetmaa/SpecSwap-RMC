@@ -2,13 +2,15 @@
 # Define compiler and flags.
 CPP       = g++ -ansi -g -O0
 CFLAGS    = -c -I ./cppunit/include/
-LINKFLAGS = ../src/specswap.a -L./cppunit/lib -l cppunit -o
+#LINKFLAGS = ../src/specswap.a -L./cppunit/lib -l cppunit -o
+LINKFLAGS = -o
 
 # Define targets.
 CPPFILES  = $(wildcard *.cpp)
 HFILES    = $(CPPFILES:.cpp=.h)
 OBJ       = $(CPPFILES:.cpp=.o)
 LIBS      = ../src/specswap.a
+LIBS2     = -l cppunit
 
 # Make and run the tests.
 all: tests run
@@ -20,7 +22,7 @@ run:
 
 # Tests target.
 tests: $(OBJ) $(LIBS)
-	$(CPP) $(LINKFLAGS) run_tests.x  $^
+	$(CPP) $(LINKFLAGS) run_tests.x  $^ ${LIBS2}
 
 # Rule for compiling.
 %.o: %.cpp  $(patsubst %.o,%.h,$@)

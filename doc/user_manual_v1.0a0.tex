@@ -1,0 +1,653 @@
+\documentclass[a4paper, 10pt]{article}
+
+\begin{document}
+
+\bibliographystyle{unsrt}
+
+\title{\LARGE SpecSwap-RMC Version 1.0a0 \\ User Manual}
+
+\date{2013-01-21}
+
+\author{Mikael Leetmaa \hspace{5mm} $<${\tt leetmaa@fysik.su.se}$>$}
+
+\maketitle
+
+\tableofcontents
+
+\section{About this document}
+This document is intended to serve as a guideline for the use and input of the
+SpecSwap-RMC program. It is not intended as a tutorial or a
+full fledged description of the SpecSwap-RMC method. But it is still
+our hope that it can serve as a useful guidance to get started with
+setting up your first SpecSwap-RMC simulations. And if ever in doubt
+about the intended behavior of a particular input keyword this
+document should be consulted.
+The aim has been to write an as up to date and
+accurate description as possible of all the input parameters and file
+formats, however there might still be errors
+in this document. If you believe a keyword or format behaves
+differently from what is described here you could check the source
+code to see what it really does. And if you do find bugs, issues,
+inconsistencies or errors in this
+document, or in the source code, please don't hesitate to contact the SpecSwap-RMC authors so that
+the problem can be fixed. You find our contact information in the
+README file in the source code distribution.
+
+\section{The method in brief}
+The SpecSwap-RMC method \cite{SS-RMC} is a flavor of reverse Monte-Carlo (RMC)
+\cite{RMC} that makes use of a finite discrete set of local
+structures, for which all relevant data is pre-computed, to
+expand the configuration space in these structures. The main reason for using the SpecSwap-RMC method
+compared to conventional RMC is to avoid expensive re-calculation of
+the data, making it practically manageable to fit data sets for which the
+theoretical evaluation is very CPU expensive. SpecSwap-RMC thus makes it
+possible to use RMC with data such as full multiple scattering EXAFS,
+XAS and NMR, where the nature of the problem and the need for accuracy
+demands expensive electronic-structure calculations, typically too costly to
+include in a straight forward way in a conventional RMC simulation.
+\\\\
+All relevant data for the local structures are
+pre-computed. A sub-set of the available local configurations (the
+{\it sample set}) is taken
+out to represent the configuration of the system. A trial move in the
+Monte-Carlo run is performed by replacing ( ``swapping'') a local
+configuration present in the sub-set with a local structure that is
+not. The re-calculation of the data for the new configuration of the
+system (needed for comparing against a provided reference to evaluate
+the success of the move - by far the most time consuming step of a
+conventional RMC simulation) is reduced to a simple add and
+subtract operation of the data that
+corresponds to the swapped local structures.
+\\\\
+When equilibrium is reached in the SpecSwap-RMC simulation (this is
+typically achieved very fast given the parameters are set to yield a
+reasonable acceptance rate) the {\it sample set} is probed repeatedly on a given
+interval to record which local structures are present. Divided by the
+number of times the {\it sample set} was probed these records
+converge towards a weighting of each local structure proportional to its
+importance within the total set of local structures to represent/fit the
+reference data. These weights are the main result from the
+SpecSwap-RMC run. Structural properties such as pair-correlation
+functions and angle distributions can then be calculated and compared
+weighted and unweighted
+from the total set of local structures. For further details about the
+method see ref \cite{SS-RMC} and for an example of the method in use see ref \cite{SS-RMC-EXAFS}.
+
+\section{Naming conventions}
+This document (and also the comments in the source code) will try to
+be as consistent as possible with the naming
+conventions of ref \cite{SS-RMC}.
+
+\subsection{library}
+We will use the term {\it library} for
+all available local structures taken together, each with its
+corresponding pre-calculated data and compiled in to a binary
+file. The {\it raw library} or {\it library raw data} are the files
+making up the library before being compiled into a binary library
+file.
+
+\subsection{basis set}
+The set of all available local structures in the library
+ will be referred to as the {\it basis set}.
+
+\subsection{basis element}
+Each local structure with
+ its corresponding pre-calculated data will be called a {\it basis
+   element}.
+
+\subsection{sample set}
+The sub-set of the {\it basis set} that, at any
+ given moment during the SpecSwap-RMC run, represents the system
+ configuration, is referred to as the {\it sample set}.
+
+\section{Before you start}
+Since the SpecSwap-RMC method uses pre-computed data from a (large)
+set of local structures you will need to select the local structures
+and generate data before you start the simulation.
+
+\subsection{Finding suitable basis structures}
+For a successful (and meaningful) SpecSwap-RMC simulation the
+structures taken as the basis set must be chosen with some care.
+They must be close enough to the real structure (the structure
+corresponding to the reference data modeled) to get a reasonable fit
+without a too low acceptance rate, yet be diverse enough
+for having the possibility of representing the real diversity of the
+local geometries in the material under study.
+
+All to date practical applications of the SpecSwap-RMC method known to
+the authors has used structures cut out from MD simulations, conventional RMC
+simulations, or generated via random distortions around a known or
+assumed equilibrium geometry see e.g.\ refs \cite{SS-RMC, SS-RMC-EXAFS}.
+However, at the time of
+writing there exists no standard way to obtain
+suitable basis structures, so the best advice is to be careful and use your
+creativity.
+\\\\
+The single most important aspect when constructing a {\it basis set} library
+is that it must be possible to fit the data. If no satisfactory fit
+can be obtained the basis set must be expanded. Consider a case with a {\it basis set} containing 10000 {\it basis elements}
+and a {\it sample set} of 100 {\it basis elements}, and we assume for
+the argument that the
+data has been calculated with infinite accuracy. If it turns out
+impossible to obtain a reasonable fit to the reference that would  be equivalent
+to say that there are no (or way too few) combinations of 100 {\it
+  basis elements} drawn from the set of 1000 that can represent the
+data. This means there are not enough {\it basis elements} with a
+geometry corresponding to the reference or that we are missing some
+very important structural components in the {\it basis set}.
+If the fit improves drastically when reducing the size of the {\it
+  sample set} this is typically an indication of an insufficient
+basis set. There are simply to few {\it basis elements} with some
+important quality missing.
+The weights can is in such a case still be quite useful.
+Examining the structures of the highest weighted {\it basis elements}
+would give an indication of what type of structures are missing in the
+{\it basis set}.
+
+\subsection{Computing the data}
+For each chosen local geometry all relevant data must be calculated
+before the library is generated,
+with one important exception. When generating the library (see below),
+the {\tt mklib} program calculates and stores the distributions of
+distances with respect to the atoms defined as the central molecule
+for each basis element.
+
+Since all other data to use in SpecSwap-RMC must be computed before
+the library is generated the
+program is necessarily general such that it can not know what the
+data represents. Any type of data that can be stored as a function of
+one variable, i.e.\ any type of curve data, can be included. Any higher
+dimensional data must be mapped down to two dimensions before
+inclusion is possible. Two dimensional data goes here under the name
+{\it curve data}.
+Data represented as a single number on each {\it basis element} is
+named {\it scalar data}. {\it Scalar data} could e.g.\ be a frequency, a number
+classifying the local structure, the local density or Voronoi
+polyhedra volume.
+All data included in the fit (except the pair correlation
+functions) must be represented either as {\it curve
+  data } or {\it scalar data}.
+
+ \subsubsection{A note on accuracy}
+It is important to remember that the accuracy of the results from
+structure modeling with RMC is
+determined by the accuracy with witch the data to fit can be
+calculated.
+Structure modeling with SpecSwap-RMC is not and exception. If
+the data is not calculated accurately enough from a given structure,
+the resulting structure from the RMC simulation will not correspond to
+the real physical structure, and conclusions drawn
+can be quite wrong. For a sound use of RMC one needs to be aware
+of the particular limitations and error bars for the type of data
+which is used for the fit, and conclusions drawn should always be
+evaluated with the accuracy of the method used to
+calculate the data in mind. For SpecSwap-RMC simulations it is also
+crucial that a good enough {\it basis set} library is used.
+
+\section{Generating a library with Mklib}
+When all data is calculated form the chosen local structures to use as
+{\it basis set} the data needs to be compiled into a library file together
+with the corresponding geometries, to be used in the SpecSwap-RMC
+simulation.  The SpecSwap-RMC program uses a binary file format
+defined by the binary I/O
+implementation in the {\tt library.cpp} file. The SpecSwap-RMC
+software package includes a program,
+{\tt mklib}, that can generate the binary library files from the raw
+library data.
+\\\\
+To generate the library several data files are needed for each {\it basis element}; a file holding the geometry, a file holding the curve
+data for each curve and a file holding all scalar data. The files
+corresponding to the same {\it basis element} must have the same base
+name, with endings corresponding to the names of the curves, {\tt .xyz} for
+the geometry and {\tt .sclr} for the scalars. For each curve
+data a file giving the scale is also needed. All files are then placed
+in a folder with the same name as the intended library name, and a
+manifest file, {\tt libraryname.info} (the {\it info file}) with
+specific info about the library and the constituent basis elements is placed
+in the directory. The syntax of the {\tt .info} file is rather strict
+fixed format so extra care must be taken to type every thing in
+correctly. The {\tt mklib} program can then, with the information from
+the {\tt info} file, be used to compile all data into a binary library file
+for use in SpecSwap-RMC, by typing:\\\\
+{\tt ./mklib3.0.x  -c libraryname }\\\\
+This makes {\tt mklib} read the file {\tt libraryname.info}
+from the {\tt ./libraryname} folder where also all other files to
+compile must be present. Please see \ref{mklib-input} below, as well as
+the examples shipped in the {\tt
+  /functest/testmklib} folder in the SpecSwap-RMC source, for details.
+
+\section{Mklib input}
+\label{mklib-input}
+This describes the input format of the {\tt .info} file for {\tt mklib},
+as well as the files refered to from that file.
+
+\subsection{Curves}
+The first line in the {\tt .info} file is the\\\\
+{\tt NCURVES N}\\\\
+keyword, where N is the number of specific curve data types to include
+in the library, e.g.\ 2 if including both say EXAFS and XAS.\\\\
+After the {\tt NCURVES N} line a set of four lines appear N times,
+once for each curve. These are the lines:\\\\
+{\tt CONVOLUTE D1 D2 D3 D4}\\
+{\tt FORMAT start stop steps}\\
+{\tt SCALE scale\_filename}\\
+{\tt ENDING ending}\\\\
+where {\tt D1 D2 D3 D4} is any set of four floating point numbers for
+the user to classify the curve. The name of the keyword stems from the
+use of a particular type of broadening scheme for TP-XAS
+calculations. The values are stored in the library file but in the
+present version they are not used. The {\tt start}, {\tt stop}
+ands {\tt steps} values for the {\tt FORMAT} keyword specifies the
+first and last x values and the number of data points to expect in
+each curve file (one for each {\tt basis element}, see below) of the type given as
+parameter to the {\tt ENDING} keyword. If say EXAFS is fitted the
+ending could e.g.\ be {\tt .exafs}, and the keyword would the be given as\\\\
+{\tt ENDING exafs}\\\\
+All files with the {\tt .exafs} extension would then need to have the
+data format with two columns, the first column giving the x values,
+with the first and last values as well as number of lines as specified
+with the {\tt FORMAT} keyword.
+\\\\
+The argument to the {\tt SCALE} keyword is the file name of a data
+file to use as scale for the x axis. The scale file must have the
+number of data lines (the same value as the {\tt steps} value to the
+{\tt FORMAT} keyword) on the first line. The data must be given in the
+correct number of lines, in two columns. The x values (the data in the first column)
+will be stored in the library while the values in the second column
+will not.
+All basis element curve data of the
+same type must match this x scale, and all reference curves of this
+type used in subsequent SpecSwap-RMC runs with this library must also
+match in x values. This is to ensure that no mistakes are made by
+comparing data which are not normalized to the same x scale.
+\\\\
+As an example, if we fit EXAFS and XAS the whole curves part of the
+{\tt mklib} input file could look like this:
+\\\\
+{\tt NCURVES 2}\\
+{\tt CONVOLUTE 1.0 2.0 1.0 3.0}\\
+{\tt FORMAT 2.3 7.65 108}\\
+{\tt SCALE dummy\_exafs\_ref.data}\\
+{\tt ENDING exafs}\\
+{\tt CONVOLUTE 0.5 535.0 1.0 545.0}\\
+{\tt FORMAT 530.0 550.0 201}\\
+{\tt SCALE xas\_scale\_file}\\
+{\tt ENDING xas}\\\\
+If no curves data should be included in the library the line {\tt
+  NCURVES 0} is given at the top, followed directly by the scalars information
+(see below).
+
+\subsection{Scalars}
+After all the curve information is given the scalar information is
+presented in two lines as:\\\\
+{\tt NSCALARS N}\\
+{\tt NAMES name1 name2 ... nameN}\\\\
+Where {\tt N} is the number of scalars and a unique name for each
+scalar must be given as a space separated list after the {\tt NAMES}
+keyword. Say that we have two scalars, the Voronoi polyhedra volume
+and area this could look like:
+\\\\
+{\tt NSCALARS 2}\\
+{\tt NAMES VP-area VP-volume}\\\\
+If there are no scalar data in the library {\tt NSCALARS 0} should be
+given and the {\tt NAMES} line should be skipped.
+
+\subsection{Geometry}
+The scalars input is followed by a line indicating how many atom types
+there are. The names of the elements could be any strings but it
+important that the atom type names correspond to the data given later
+in the geometry {\tt .xyz} files. The format is:
+\\\\
+{\tt NATOMTYPES N name1 name2 ... nameN}
+\\\\
+If all local configurations have the same number of atoms and if the same
+indices should be considered included in the central molecule an
+optional keyword {\tt ATOMS} should be given after the {\tt
+  NATOMTYPES}. The {\tt ATOMS} keyword takes the arguments:\\\\
+{\tt ATOMS M M1 M2 ... MN MOL Q Q1 Q2 ...}\\\\
+where {\tt M} is the number of atoms (the same for all {\tt .xyz} files),
+{\tt M1} the number of atoms of the first atom type, assumed to be the first
+{\tt M1} entries in the {\tt .xyz} file, {\tt M2} the number of atoms
+of the second atom type, etc. After the last integer indicating the
+number of atoms of a specific type the word {\tt MOL} is written,
+followed by the number of atoms in the central molecule {\tt Q}, and
+then {\tt Q} integers telling the indices (atom numbers indexed from zero)
+in the {\tt .xyz} of
+the central molecule atoms. Note that the first index in this list should
+always be 0 (zero). To clarify with an example, if we have 39 water
+molecules the input could look like this.\\\\
+{\tt NATOMTYPES 2 O H}\\
+{\tt ATOMS 117 39 78 MOL 3 0 39 40}
+
+\subsection{Basis name listing}
+Lastly the keyword {\tt START} is given followed by the number of
+basis elements to compile into a library. Then all the base names
+(without endings) are given, one on each line, followed by the final
+line with the word {\tt END}. In a realistic situation this list is
+likely to be several thousand lines long but we give here as an example of the
+format a basis name listing with 5 entries.\\\\
+{\tt START 5}\\
+{\tt example\_basename1}\\
+{\tt example\_basename2}\\
+{\tt example\_basename3}\\
+{\tt example\_basename4}\\
+{\tt example\_basename5}\\
+{\tt END}
+
+\subsection{Data for each basis element}
+
+The data for the library is given in files named after the listed
+base names of the basis elements, with endings corresponding to the
+curve, scalar and xyz data.
+
+\subsubsection{Curve data}
+For each curve and listed basis name there must be a file name {\tt
+  basename.ending} giving the curve data. In our above example with
+{\tt .xas} and {\tt .exafs} data endings the files for the first
+listed base name would be:\\\\
+{\tt example\_basename1.xas}\\
+{\tt example\_basename1.exafs}\\\\
+The data in these files are given in two columns with the number of
+lines corresponding to the {\tt steps} value given to the {\tt FORMAT}
+keyword in the {\tt .info} file. The first column data must match the
+given values in the corresponding scale file.
+
+\subsubsection{Scalar data}
+For each basis element there must be a file named
+{\tt basename.sclr} holding scalar information. The scalars are given
+as a space separated list of floating point numbers on one line, one
+number for each scalar in the system. All basis elements must have the
+same number of scalar values, as specified in the {\tt .info} file.
+
+\subsubsection{Geometry data}
+The geometry data from each basis element is
+given in a file {\tt basename.xyz}. The format of this file is the
+``standard'' xyz format, the first line gives the number of
+atoms. Followed by a blank line. Then one line for each atom with the
+symbol and x, y and z coordinates.\\\\
+{\tt N}\\\\
+{\tt symbol1 x1 y1 z1}\\
+{\tt symbol1 x2 y2 z2}\\
+{\tt ... }\\
+{\tt symbolN xN yN zN}\\\\
+The types and number of atoms must match the {\tt NATOMTYPES} and {\tt ATOMS}
+information given in the {\tt .info} file.
+
+\subsection{A full example}
+Putting all the above examples together the content of the {\tt .info}
+file looks like this:\\\\
+{\tt NCURVES 2}\\
+{\tt CONVOLUTE 1.0 2.0 1.0 3.0}\\
+{\tt FORMAT 2.3 7.65 108}\\
+{\tt SCALE dummy\_exafs\_ref.data}\\
+{\tt ENDING exafs}\\
+{\tt CONVOLUTE 0.5 535.0 1.0 545.0}\\
+{\tt FORMAT 530.0 550.0 201}\\
+{\tt SCALE xas\_scale\_file}\\
+{\tt ENDING xas}\\
+{\tt NSCALARS 2}\\
+{\tt NAMES VP-area VP-volume}\\
+{\tt NATOMTYPES 2 O H}\\
+{\tt ATOMS 117 39 78 MOL 3 0 39 40}\\
+{\tt START 5}\\
+{\tt example\_basename1}\\
+{\tt example\_basename2}\\
+{\tt example\_basename3}\\
+{\tt example\_basename4}\\
+{\tt example\_basename5}\\
+{\tt END}\\\\
+And for this particular example it is also required that the files {\tt
+  dummy\_exafs\_ref.data} and {\tt xas\_scale\_file} are present, as well as for each base name the files with endings: {\tt
+.exafs .xas .sclr .xyz}
+
+\section{Running a simulation}
+Once all data is calculated and the library is set up running the
+actual SpecSwap-RMC simulation is fairly straight forward. The
+SpecSwap-RMC executable is run with the name of the input file {\tt name.inp}
+withouth the {\tt .inp} ending as the only argument, and the output to
+stdout can be sent to an output file of choice:\\\\
+{\tt ./SpecSwapRMC.x name $>$ output }\\\\
+See \ref{input} below for a description of the input file
+format. For a few proper working examples please see the examples
+in the {\tt  functest/testspecswap } folder in the SpecSwap-RMC source
+distribution.
+
+\section{Analyzing results}
+When the SpecSwap-RMC simulation is finished i.e.\ when it has run for a
+long enough time for the weights to approach convergence, there is a
+single, yet very useful, built in analysis option.
+The typical usage is to make a new
+restart from the converged weights, but instead of running the
+Monte-Carlo loop use the option available in the ANALYSIS input
+section to generate weighted and unweighted curves. See
+\ref{analysis-input} below for more details.
+See also the examples in the {\tt  functest/testspecswap
+} folder in the SpecSwap-RMC source distribution.
+
+
+\section{SpecSwap-RMC input}
+\label{input}
+The SpecSwap-RMC program takes the name of the input file without the
+{\tt .inp} extension as the only command line argument. This file
+specify fully the behavior of the program.
+
+\subsection{Input structure}
+The input file is structured in keyword sections, each with a specified set of
+possible keywords.
+
+\subsubsection{Sections}
+Each section begins with a \&
+character followed by its name, and ends with the \&END
+keyword. Inside the section are one or more keywords given, some of
+which are optional, as described in more detail below. Some sections
+also take a keyword argument directly after the name.\\\\
+\&SECTIONNAME $<$argument$>$\\
+KEYWORD1  $<$arg1 arg2 ...$>$\\
+KEYWORD2  $<$arg1 arg2 ...$>$\\
+...\\
+\&END\\
+\\\\
+The first section is always the RUN section which controls the general
+flow of the program. For each curve fit there must be a CURVE
+section and for each scalar fit there must be a SCALAR section.
+If fitting
+a pcf there is a PCF section to add and if interested in post run
+analysis one adds an ANALYSIS section.
+ Comments starting with a \# character are allowed in the
+input file between but not inside the sections.
+
+\subsubsection{Keywords and arguments}
+Each section has a particular set of valid keywords. Most keywords
+take one more arguments as specified below. Also some of the
+sections take arguments, e.g. the SCALAR section, to determine which
+scalar to fit. Below is a list of all sections and their keywords.
+
+\subsection{\&RUN}
+The RUN section control all basic run parameters, how many steps to
+take, which library file to use, when to save results, etc. A RUN
+section  must be present as the first section in any input file.
+Below is a listing of all valid RUN section keywords.
+
+\subsubsection{TITLE $<title>$}
+Set a title to the run. This title is used as the base name of the
+generated restart and weights files. This keyword is compulsory. The
+title must be given as a single string (no spaces).
+
+\subsubsection{LIBPATH $<filepath>$}
+Set a path to a library file to use for the run. This
+keyword is compulsory. The path is given
+relative to the directory in which the program is executed.
+
+\subsubsection{SEED $<value>$}
+Set a seed value to the random number generator. This keyword is
+compulsory. The value must be given as a positive integer.
+
+\subsubsection{NSAMPLE $<value>$}
+Set the number of elements in the sample set. This keyword is
+compulsory. The value must be given as a positive integer.
+
+\subsubsection{MOVES $<value>$}
+Set the limit of the run, given as the number of {\it attempted} moves to take.
+This keyword is compulsory. The value must be given as a positive integer.
+
+\subsubsection{PRINT $<value>$}
+Set the interval, in number of {\it accepted} moves, for printing to screen / stdout.
+This keyword is compulsory. The value must be given as a positive integer.
+
+\subsubsection{PROBE $<value>$}
+Set the interval, in number of {\it accepted} moves, for probing the sample
+set to collect weights. This keyword is compulsory. The value must be given as a positive integer.
+
+\subsubsection{DUMP $<value>$}
+Set the interval, in number of {\it accepted} moves, for writing the
+momentaneous curve and pcf averages
+from the sample set. This keyword is compulsory.
+ The value must be given as a positive integer.
+
+\subsubsection{RESTART $<file path>$}
+Set the path to a restart file to make a restart from a previous
+run. This keyword is optional. With no RESTART keyword given the run
+will start from a random samples set, with all weights starting from
+zero. The file path is given relative to the folder the program is
+executed from.
+
+\subsection{\&PCF}
+The PCF section is added to the input file to fit a reference
+pair correlation function. These are the valid keywords:
+
+\subsubsection{RMIN $<value>$}
+Give the first r value of the reference. This keyword is compulsory.
+
+\subsubsection{RMAX $<value>$}
+Give the last r value of the reference. This keyword is compulsory.
+
+\subsubsection{DR $<value>$}
+Give the spacing between the bins. This keyword is compulsory. It is
+important that the number of bins as calculated from (RMAX-RMIN)/DR
+is integer.
+
+\subsubsection{FIT $<lower value>$ $<upper value>$}
+Give the r interval to fit. This keyword is optional. If not given the whole
+interval from RMIN to RMAX will be used.
+
+\subsubsection{SIGMA $<value>$}
+The sigma value to use in the fitting. This keyword is compulsory. The
+value must be given as a positive floating point number.
+
+\subsubsection{NUMBERDENSITY $<value>$}
+The number density needed for normalizing the PCFs. This keyword is compulsory. The
+value must be given as a positive floating point number.
+
+\subsubsection{PARTIAL $<first type> <second type>$}
+Specify the atom types of the partial to fit. This keyword is compulsory.
+The atom types are referred
+to in the order they have in the library, i.e., as given in the {\tt
+  .info} file when the library was setup.
+
+\subsubsection{PATH $<file path>$}
+The path to the file holding the reference data. This
+keyword is compulsory. The path is given
+relative to the directory in which the program is executed.
+The reference data file should have two columns, the first giving the
+r points and the second the corresponding g(r) data. The bin size and
+max and min values must match the values given in the RMIN and RMAX keywords.
+
+\subsection{\&CURVE $<name>$}
+The CURVE section is added to the input file to fit a reference
+curve. The curve name, as present in the library (given as the ending
+of this curve type in the {\tt .info} file when constructing the
+library) is given as argument. Valid keywords are:
+
+\subsubsection{EXPPATH $<file path>$}
+The path to the file holding the reference data. This
+keyword is compulsory. The path is given
+relative to the directory in which the program is executed.
+The reference data file should have two columns, the first giving the
+x points and the second the corresponding curve points.
+The bin size and max and min values must
+match the values given in the {\tt .info} file when creating the library.
+
+\subsubsection{AREARENORM}
+This optional keyword works as a switch. If the keyword is present
+this indicates that the
+fitted curve should be re-normalized to the same area
+(computed as the sum of all y values multiplied by bin size,
+thus assuming all values to be positive)
+before compared to the reference.
+
+\subsubsection{SIGMA $<value>$}
+The sigma value to use in the fitting. This keyword is compulsory. The
+value must be given as a positive floating point number.
+
+\subsection{\&SCALAR $<name>$}
+The SCALAR section is added to the input file to fit a reference
+scalar, either as a mean value, a specific value or as a distribution.
+The scalar name, as present in the library (given as the name
+of the scalar type in the {\tt .info} file when constructing the
+library) is given as argument.
+\\\\
+The SCALAR section comes in three different flavors, depending on what
+type of fit is to be performed. This is controlled by adding one of
+the three keywords MEAN, VALUE or DISTRIBUTION as the first keywords in
+the SCALAR section. Only one of these keywords can be added to a
+given SCALAR section, but there is no limit to how many different SCALAR
+sections there can be in one input file.
+
+\subsubsection{MEAN $<target>$}
+To fit the mean value of the specified scalar. The target value is
+given as a floating point number.
+
+\subsubsection{VALUE $<lower limit>$ $<upper limit>$ $<target>$}
+To fit to a fraction within a certain interval. The target value refers
+to the fraction of all element in the sample set that should have their
+scalar value between the given lower and upper limit.
+
+\subsubsection{DISTRIBUTION $<file path>$}
+To fit a reference distribution. The file path is given
+relative to the directory in which the program is executed.
+The reference data file should start with an integer on the first
+line giving the number of subsequent lines of data. The data should
+have three columns, the first giving x (bin) values and the second the
+distribution value. The third column gives a floating point number
+which will be multiplied with the error in that point/bin to allow for
+weighted error values. This is particularly useful if one wants to fit
+harder to some parts of the reference distribution.
+The distribution is area normalized
+with the corresponding scalar distribution when comparing. The first
+and last bins includes every thing below and above the
+distribution and the x (bin) values in the first column refer to the
+center of the bin.
+
+\subsubsection{SIGMA $<value>$}
+The scalar section must have the SIGMA keyword with the specified
+value. This keyword is compulsory.
+
+\subsection{\&ANALYSIS}
+\label{analysis-input}
+The ANALYSIS section is added to the input file to perform an analysis
+run after the Monte-Carlo run has finished. The ANALYSIS section only takes one keyword.
+
+\subsubsection{CHUNKS $<number of chunks>$ $<chunk size>$}
+This keyword is
+compulsory. All {\it basis elements} in the library are sorted according to
+their weight. The {\it basis elements}
+are then bunched into chunks and for all data sets, (curves,
+scalars, pcfs) specified in the input file the data for each chunk is
+written weighted and unweighted to file. The number of chunks and
+chunk size are given as arguments. Note that if the number of chunks times the
+chunk size is larger than the number of elements in the basis set
+library the last chunk will be truncated accordingly.
+
+\section{Additional sources of information}
+For a source code reference manual see the document
+{\tt refman\_vX.X.pdf} distributed with the SpecSwap-RMC source code.
+For a hint on how to extend the program to fit other types of data,
+or how to extend it with custom analysis functions there might be a
+development manual written in the future. Contact the SpecSwap-RMC
+authors if you are interested in such a document or further guidance.
+
+\newpage
+\bibliography{ref}
+
+\end{document}
+
